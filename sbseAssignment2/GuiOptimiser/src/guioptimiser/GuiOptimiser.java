@@ -23,6 +23,7 @@ import java.util.Random;
  *
  * @author Mahmoud-Uni
  */
+
 public class GuiOptimiser {
 
     private static String TARGET_APP = "calculator.jar";
@@ -159,53 +160,33 @@ public class GuiOptimiser {
             RGB.add(new ArrayList<Integer>(Arrays.asList(new Integer[]{randomInt.nextInt(256), randomInt.nextInt(256), randomInt.nextInt(256)})));
             RGB.add(new ArrayList<Integer>(Arrays.asList(new Integer[]{randomInt.nextInt(256), randomInt.nextInt(256), randomInt.nextInt(256)})));
 
-            saveToCSV(parentDir.concat(TARGET_APP_COLOR), guiComponents, RGB, true);
+            saveToCSV(parentDir.concat(TARGET_APP_COLOR), guiComponents, RGB);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    public static void saveToCSV(String filePath, ArrayList<String> guiComponents, ArrayList<ArrayList<Integer>> RGB, boolean append) {
-        BufferedWriter br = null;
+    public static int calculateChargeConsumptionPerPixel() {
         Random random = new Random();
+        int energyCost = 1000 + random.nextInt(9001); 
+
+        return energyCost;
+    }
+
+    public static void saveToCSV(String filePath, ArrayList<String> guiComponents, ArrayList<ArrayList<Integer>> RGB) {
         try {
-            File file = new File(filePath);
-            // Check whether file exists
-            boolean alreadyExists = file.exists();
-            
-            br = new BufferedWriter(new FileWriter(file, append));
-            
-            if (!alreadyExists) {
-                String headerLine = String.join(",", guiComponents) + ",energyCost\n";
-                br.write(headerLine);
+            BufferedWriter br = new BufferedWriter(new FileWriter(new File(filePath)));
+            String line = "";
+            for (int i = 0; i < guiComponents.size(); i++) {
+                line += guiComponents.get(i).concat(",").concat(RGB.get(i).toString().replace("[", "").replace("]", "").replaceAll("\\s", "")) + "\n";
+                //System.out.println(line);
             }
-            
-            // 生成能耗成本的随机数
-            int energyCost = 1000 + random.nextInt(9001); // 1000-10000之间的随机数
-            
-            // 生成并写入新的数据行
-            StringBuilder sb = new StringBuilder();
-            
-            for (ArrayList<Integer> color : RGB) {
-                String rgbString = color.get(0) + "_" + color.get(1) + "_" + color.get(2);
-                sb.append(rgbString).append(",");
-            }
-            sb.append(energyCost).append("\n");
-            
-            br.write(sb.toString());
+            br.write(line);
             br.flush();
             br.close();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
@@ -220,4 +201,5 @@ public class GuiOptimiser {
         }
         return dir;
     }
+
 }

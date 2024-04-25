@@ -15,3 +15,15 @@ If you have any questions please post them on the course forum.
 
 Good Luck,
 Mahmoud.
+
+# How to Start
+
+1. Make sure you are at sbseAssignment2/GuiOptimiser/dist/simpleApp.jar
+2. type in: java -jar GuiOptimiser.jar simpleApp.jar
+
+# How to Compile
+
+1. Make sure you are at sbseAssignment2/GuiOptimiser/
+2. run: ant clean jar -Djavac.source=1.8 -Djavac.target=1.8
+3. If simpleApp.jar or calculator.jar in dist is deleted, please find it back
+4. and then you can start the project
